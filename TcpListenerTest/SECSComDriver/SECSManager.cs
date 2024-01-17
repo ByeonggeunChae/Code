@@ -10,6 +10,7 @@ using System.Xml;
 using SECSControl;
 using SECSControl.Common;
 using SECSControl.HSMS;
+using SECSControl.XML;
 
 namespace SECSControl
 {
@@ -51,6 +52,18 @@ namespace SECSControl
         public void Dispose()
         {
             ReleaseEventHandler();
+        }
+
+        public XmlDocument GetSECSXmlData()
+        {
+            Config mConfig = new Config();
+            XMLWriter writer = new XMLWriter(mConfig);
+            XmlDocument doc = new XmlDocument();
+
+            writer.CreateTopNode(ref doc);
+            writer.CreateCommonInfo(ref doc);
+            writer.CreateHeader(ref doc);
+            return doc;
         }
 
         public SECS_ERROR Initialize(string EquipmentID)

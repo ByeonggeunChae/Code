@@ -12,7 +12,6 @@ using System.Net.Sockets;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
-using static SECSControl.SECSManager;
 
 namespace TcpListenerTest
 {
@@ -54,6 +53,7 @@ namespace TcpListenerTest
             //aDispDoc = MakeBasicXml(aDispDoc);
 
             //XmlDocument test = Test();
+            Test();
 
             //ProcessModule mainModule = Process.GetCurrentProcess().MainModule;
             //string str = mainModule.FileName.Replace(mainModule.ModuleName, "SEComEnabler.SEComDriver.dll");
@@ -72,82 +72,85 @@ namespace TcpListenerTest
             dataGridView1.Rows.Add("TEST");
         }
 
-        private XmlDocument Test()
+        private void Test()
         {
-            XmlDocument doc = new XmlDocument();
+            //XmlDocument doc = new XmlDocument();
 
-            XmlNode root = doc.CreateElement("SECOM_MSG");
-            doc.AppendChild(root);
+            //XmlNode root = doc.CreateElement("SECOM_MSG");
+            //doc.AppendChild(root);
 
-            XmlNode node1 = doc.CreateElement("CommonInfo");
-            XmlNode aa = doc.CreateElement("EQPID");
-            aa.InnerText = "AAA";
-            node1.AppendChild(aa);
+            //XmlNode node1 = doc.CreateElement("CommonInfo");
+            //XmlNode aa = doc.CreateElement("EQPID");
+            //aa.InnerText = "AAA";
+            //node1.AppendChild(aa);
 
-            aa = doc.CreateElement("TIME");
-            aa.InnerText = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
-            node1.AppendChild(aa);
+            //aa = doc.CreateElement("TIME");
+            //aa.InnerText = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
+            //node1.AppendChild(aa);
 
-            aa = doc.CreateElement("Direction");
-            aa.InnerText = "FromHost";
-            node1.AppendChild(aa);
+            //aa = doc.CreateElement("Direction");
+            //aa.InnerText = "FromHost";
+            //node1.AppendChild(aa);
 
-            aa = doc.CreateElement("Identity");
-            aa.InnerText = "NORMAL_MSG";
-            node1.AppendChild(aa);
+            //aa = doc.CreateElement("Identity");
+            //aa.InnerText = "NORMAL_MSG";
+            //node1.AppendChild(aa);
 
-            aa = doc.CreateElement("ErrorCode");
-            aa.InnerText = "0";
-            node1.AppendChild(aa);
+            //aa = doc.CreateElement("ErrorCode");
+            //aa.InnerText = "0";
+            //node1.AppendChild(aa);
 
-            aa = doc.CreateElement("ErrorMessage");
-            aa.InnerText = "0";
-            node1.AppendChild(aa);
+            //aa = doc.CreateElement("ErrorMessage");
+            //aa.InnerText = "0";
+            //node1.AppendChild(aa);
 
-            root.AppendChild(node1);
+            //root.AppendChild(node1);
 
-            node1 = doc.CreateElement("Header");
+            //node1 = doc.CreateElement("Header");
 
-            aa = doc.CreateElement("MessageName");
-            aa.InnerText = "A";
-            node1.AppendChild(aa);
+            //aa = doc.CreateElement("MessageName");
+            //aa.InnerText = "A";
+            //node1.AppendChild(aa);
 
-            aa = doc.CreateElement("Stream");
-            aa.InnerText = "B";
-            node1.AppendChild(aa);
+            //aa = doc.CreateElement("Stream");
+            //aa.InnerText = "B";
+            //node1.AppendChild(aa);
 
-            aa = doc.CreateElement("Function");
-            aa.InnerText = "C";
-            node1.AppendChild(aa);
+            //aa = doc.CreateElement("Function");
+            //aa.InnerText = "C";
+            //node1.AppendChild(aa);
 
-            aa = doc.CreateElement("Wait");
-            aa.InnerText = "D";
-            node1.AppendChild(aa);
+            //aa = doc.CreateElement("Wait");
+            //aa.InnerText = "D";
+            //node1.AppendChild(aa);
 
-            aa = doc.CreateElement("SystemBytes");
-            aa.InnerText = "E";
-            node1.AppendChild(aa);
+            //aa = doc.CreateElement("SystemBytes");
+            //aa.InnerText = "E";
+            //node1.AppendChild(aa);
 
-            aa = doc.CreateElement("AutoReply");
-            aa.InnerText = "F";
-            node1.AppendChild(aa);
+            //aa = doc.CreateElement("AutoReply");
+            //aa.InnerText = "F";
+            //node1.AppendChild(aa);
 
-            aa = doc.CreateElement("NoLogging");
-            aa.InnerText = "G";
-            node1.AppendChild(aa);
+            //aa = doc.CreateElement("NoLogging");
+            //aa.InnerText = "G";
+            //node1.AppendChild(aa);
 
-            aa = doc.CreateElement("DeviceID");
-            aa.InnerText = "H";
-            node1.AppendChild(aa);
+            //aa = doc.CreateElement("DeviceID");
+            //aa.InnerText = "H";
+            //node1.AppendChild(aa);
 
-            aa = doc.CreateElement("MessageData");
-            aa.InnerText = "I";
-            node1.AppendChild(aa);
+            //aa = doc.CreateElement("MessageData");
+            //aa.InnerText = "I";
+            //node1.AppendChild(aa);
 
-            root.AppendChild(node1);
+            //root.AppendChild(node1);
 
-            return doc;
-        }
+            //return doc;
+
+            SECSManager manager = new SECSManager();
+            XmlDocument doc = manager.GetSECSXmlData();
+        } 
 
         internal XmlDocument CreateTopNode(ref XmlElement aRootElement)
         {
