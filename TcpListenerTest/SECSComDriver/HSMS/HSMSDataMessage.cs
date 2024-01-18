@@ -1,19 +1,13 @@
 ﻿using SECSControl.Common;
 using System;
-using System.Collections;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace SECSControl.HSMS
 {
     internal class HSMSDataMessage : CustomThread
     {
         private bool IsThreadRun = false;
-        private ConcurrentQueue<HSMSItem> mMessageQueue = new ConcurrentQueue<HSMSItem>();
+        private ConcurrentQueue<MSGItem> mMessageQueue = new ConcurrentQueue<MSGItem>();
         private HSMSHandler mHandler;
 
         internal void Initialize(HSMSHandler handler)
@@ -28,22 +22,22 @@ namespace SECSControl.HSMS
             IsThreadRun = false;
         }
 
-        internal void Enqueue(HSMSItem item)
+        internal void Enqueue(MSGItem data)
         {
-            mMessageQueue.Enqueue(item);
+            mMessageQueue.Enqueue(data);
         }
 
         internal override void Run()
         {
-            HSMSItem item = null;
+            MSGItem data = null;
             while (IsThreadRun)
             {
                 try
                 {
                     if (!mMessageQueue.IsEmpty)
                     {
-                        mMessageQueue.TryDequeue(out item);
-                        ProcessMessage(item);
+                        mMessageQueue.TryDequeue(out data);
+                        ProcessMessage(data);
                     }
                 }
                 catch (Exception e)
@@ -53,7 +47,7 @@ namespace SECSControl.HSMS
             }
         }
 
-        private void ProcessMessage(HSMSItem item)
+        private void ProcessMessage(MSGItem data)
         {
 
         }

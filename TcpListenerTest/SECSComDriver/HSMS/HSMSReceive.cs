@@ -1,13 +1,9 @@
 ﻿using SECSControl.Common;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace SECSControl.HSMS
 {
@@ -47,7 +43,7 @@ namespace SECSControl.HSMS
                         }
 
                         nReadLength = IPAddress.NetworkToHostOrder(mHandler.mReader.ReadInt32());   //  Read Length
-                        mHandler.HSMSReceive(SetHSMSItem(ReadSocketStream(nReadLength)));
+                        mHandler.HSMSReceive(SetHSMSData(ReadSocketStream(nReadLength)));
                     }
                 }
                 catch(Exception ex)
@@ -58,17 +54,17 @@ namespace SECSControl.HSMS
             Debug.WriteLine("Terminate HSMSReceiveThread!!");
         }
 
-        private HSMSItem SetHSMSItem(byte[] readByte)
+        private MSGItem SetHSMSData(byte[] readByte)
         {
-            HSMSItem Item = new HSMSItem()
+            MSGItem data = new MSGItem()
             {
                 Length = readByte.Length,
                 Header = new byte[10]
             };
-            Item.DataItem = new byte[Item.Length - 10];
-            Array.Copy((Array)readByte, (Array)Item.Header, 10);
-            Array.Copy((Array)readByte, 10, (Array)Item.DataItem, 0, Item.DataItem.Length);
-            return Item;
+            data.DataItem = new byte[data.Length - 10];
+            Array.Copy((Array)readByte, (Array)data.Header, 10);
+            Array.Copy((Array)readByte, 10, (Array)data.DataItem, 0, data.DataItem.Length);
+            return data;
         }
 
         private byte[] ReadSocketStream(int ReadLength)

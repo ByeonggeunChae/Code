@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Xml;
-using SECSControl;
-using SECSControl.Common;
+﻿using SECSControl.Common;
 using SECSControl.HSMS;
-using SECSControl.XML;
+using System;
+using System.Collections.Concurrent;
+using System.Threading;
+using System.Xml;
 
 namespace SECSControl
 {
@@ -57,12 +50,8 @@ namespace SECSControl
         public XmlDocument GetSECSXmlData()
         {
             Config mConfig = new Config();
-            XMLWriter writer = new XMLWriter(mConfig);
-            XmlDocument doc = new XmlDocument();
-
-            writer.CreateTopNode(ref doc);
-            writer.CreateCommonInfo(ref doc);
-            writer.CreateHeader(ref doc);
+            XMLDataConvert writer = new XMLDataConvert(mConfig);
+            XmlDocument doc = writer.GetSECStoXML();
             return doc;
         }
 

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SECSControl.Common
+﻿namespace SECSControl.Common
 {
-    internal class HSMSItem
+    internal class MSGItem
     {
         internal int Length;
         internal byte[] Header;

@@ -1,14 +1,8 @@
 ﻿using SECSControl.Common;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Net.Http.Headers;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace SECSControl.HSMS
@@ -42,7 +36,7 @@ namespace SECSControl.HSMS
 
         HSMSConnect mHSMSConnect = null;
         HSMSReceive mHSMSReceive = null;
-        HSMSDataMessage mHSMSConvert = null;
+        HSMSDataMessage mHSMSDataMessage = null;
         HSMSSend mHSMSSend = null;
 
         SECS_STATUS mStatus = SECS_STATUS.UNKNOWN;
@@ -92,8 +86,8 @@ namespace SECSControl.HSMS
             mHSMSReceive = new HSMSReceive();
             mHSMSReceive.Initialize(this);
 
-            mHSMSConvert = new HSMSDataMessage();
-            mHSMSConvert.Initialize(this);
+            mHSMSDataMessage = new HSMSDataMessage();
+            mHSMSDataMessage.Initialize(this);
 
             mHSMSSend = new HSMSSend();
             mHSMSSend.Initialize(this);
@@ -133,21 +127,21 @@ namespace SECSControl.HSMS
             mStatus = status;
         }
 
-        public void HSMSReceive(HSMSItem item)
+        public void HSMSReceive(MSGItem data)
         {
             byte[] numArray = new byte[4];
 
-            Array.Copy((Array)item.Header, 6, (Array)numArray, 0, 4);
+            Array.Copy((Array)data.Header, 6, (Array)numArray, 0, 4);
             long systemBytes = Config.Bytes2Long(numArray, true);
-            byte num = item.Header[5];
+            byte num = data.Header[5];
             if (num == (byte)0)
             {
-                item.IsControlMsg = false;
-                mHSMSConvert.Enqueue(item);
+                data.IsControlMsg = false;
+                mHSMSDataMessage.Enqueue(data);
             }
             else
             {
-                item.IsControlMsg = true;
+                data.IsControlMsg = true;
                 switch (num)
                 {
                     case 1: //  Select

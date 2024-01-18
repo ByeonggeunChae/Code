@@ -54,7 +54,8 @@
   <ItemGroup>
     <Compile Include="Common\Config.cs" />
     <Compile Include="Common\CustomThread.cs" />
-    <Compile Include="Common\HSMSItem.cs" />
+    <Compile Include="Common\MSGItem.cs" />
+    <Compile Include="Common\SECSDataItem.cs" />
     <Compile Include="HSMS\HSMSConnect.cs" />
     <Compile Include="HSMS\HSMSHandler.cs" />
     <Compile Include="HSMS\HSMSDataMessage.cs" />
@@ -62,8 +63,7 @@
     <Compile Include="HSMS\HSMSSend.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SECSManager.cs" />
-    <Compile Include="XML\XMLReader.cs" />
-    <Compile Include="XML\XMLWriter.cs" />
+    <Compile Include="Common\XMLDataConvert.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -84,5 +84,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
