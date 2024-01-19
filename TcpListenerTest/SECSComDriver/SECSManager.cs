@@ -1,5 +1,6 @@
 ﻿using SECSControl.Common;
 using SECSControl.HSMS;
+using SECSControl.SECS;
 using System;
 using System.Collections.Concurrent;
 using System.Threading;
@@ -35,6 +36,8 @@ namespace SECSControl
         ConcurrentQueue<int> mHandlerQueue = new ConcurrentQueue<int>();
         bool IsThreadRun = false;
 
+        SECSDataItem mSECSDataItem = new SECSDataItem();
+
         public SECSManager()
         {
 
@@ -51,7 +54,7 @@ namespace SECSControl
         {
             Config mConfig = new Config();
             XMLDataConvert writer = new XMLDataConvert(mConfig);
-            XmlDocument doc = writer.GetSECStoXML();
+            XmlDocument doc = writer.GetSECStoXML(mSECSDataItem);
             return doc;
         }
 

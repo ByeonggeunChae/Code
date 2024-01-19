@@ -55,7 +55,8 @@
     <Compile Include="Common\Config.cs" />
     <Compile Include="Common\CustomThread.cs" />
     <Compile Include="Common\MSGItem.cs" />
-    <Compile Include="Common\SECSDataItem.cs" />
+    <Compile Include="SECS\SECSIIData.cs" />
+    <Compile Include="SECS\SECSDataItem.cs" />
     <Compile Include="HSMS\HSMSConnect.cs" />
     <Compile Include="HSMS\HSMSHandler.cs" />
     <Compile Include="HSMS\HSMSDataMessage.cs" />

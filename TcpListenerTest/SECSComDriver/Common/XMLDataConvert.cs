@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SECSControl.SECS;
+using System;
 using System.Xml;
 
 namespace SECSControl.Common
@@ -51,11 +52,11 @@ namespace SECSControl.Common
                 commonInfoNode.AppendChild(childNode);
 
                 childNode = sourceXml.CreateElement("ErrorCode");
-                childNode.InnerText = "0";
+                childNode.InnerText = item.ErrorCode.ToString();
                 commonInfoNode.AppendChild(childNode);
 
                 childNode = sourceXml.CreateElement("ErrorMessage");
-                childNode.InnerText = "0";
+                childNode.InnerText = item.ErrorMessage;
                 commonInfoNode.AppendChild(childNode);
 
                 root.AppendChild(commonInfoNode);
@@ -79,19 +80,19 @@ namespace SECSControl.Common
                 headerNode.AppendChild(childNode);
 
                 childNode = sourceXml.CreateElement("Stream");
-                childNode.InnerText = "B";
+                childNode.InnerText = item.Stream.ToString();
                 headerNode.AppendChild(childNode);
 
                 childNode = sourceXml.CreateElement("Function");
-                childNode.InnerText = "C";
+                childNode.InnerText = item.Function.ToString();
                 headerNode.AppendChild(childNode);
 
                 childNode = sourceXml.CreateElement("Wait");
-                childNode.InnerText = "D";
+                childNode.InnerText = item.WaitBit.ToString();
                 headerNode.AppendChild(childNode);
 
                 childNode = sourceXml.CreateElement("SystemBytes");
-                childNode.InnerText = "E";
+                childNode.InnerText = item.SystemBytes.ToString();
                 headerNode.AppendChild(childNode);
 
                 childNode = sourceXml.CreateElement("AutoReply");
@@ -103,7 +104,7 @@ namespace SECSControl.Common
                 headerNode.AppendChild(childNode);
 
                 childNode = sourceXml.CreateElement("DeviceID");
-                childNode.InnerText = "H";
+                childNode.InnerText = item.DeviceID.ToString();
                 headerNode.AppendChild(childNode);
 
                 childNode = sourceXml.CreateElement("MessageData");

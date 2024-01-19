@@ -36,15 +36,8 @@ namespace TcpListenerTest
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //LinkEventSECS();
-            //manager.Initialize("aaaa");
-
-            //dataGridView1.Rows[0].Cells[0].Value = "BK";      
-            //dataGridView1.Rows[0].Cells[1].Value = "LOVE";
-
-            MessageBox.Show(dataGridView1.Rows[0].Cells[1].Value.ToString());
-            dataGridView1.Rows[0].Cells[1].Value = "DELETE";
-            MessageBox.Show(dataGridView1.Rows[0].Cells[1].Value.ToString());
+            LinkEventSECS();
+            manager.Initialize("aaaa");
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -52,104 +45,16 @@ namespace TcpListenerTest
             //XmlDocument aDispDoc = null;
             //aDispDoc = MakeBasicXml(aDispDoc);
 
-            //XmlDocument test = Test();
-            Test();
+            //Test();
 
             //ProcessModule mainModule = Process.GetCurrentProcess().MainModule;
             //string str = mainModule.FileName.Replace(mainModule.ModuleName, "SEComEnabler.SEComDriver.dll");
-
-            DataGridViewTextBoxColumn cell1 = new DataGridViewTextBoxColumn();
-            cell1.HeaderText = "TEXT";
-            dataGridView1.Columns.Add(cell1);
-
-            DataGridViewButtonColumn cell = new DataGridViewButtonColumn();
-            cell.HeaderText = "BTN";            
-            cell.UseColumnTextForButtonValue = true;
-            cell.ReadOnly = false;
-            cell.Text = "CLICK";            
-            dataGridView1.Columns.Add(cell);
-
-            dataGridView1.Rows.Add("TEST");
         }
 
         private void Test()
         {
-            //XmlDocument doc = new XmlDocument();
-
-            //XmlNode root = doc.CreateElement("SECOM_MSG");
-            //doc.AppendChild(root);
-
-            //XmlNode node1 = doc.CreateElement("CommonInfo");
-            //XmlNode aa = doc.CreateElement("EQPID");
-            //aa.InnerText = "AAA";
-            //node1.AppendChild(aa);
-
-            //aa = doc.CreateElement("TIME");
-            //aa.InnerText = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
-            //node1.AppendChild(aa);
-
-            //aa = doc.CreateElement("Direction");
-            //aa.InnerText = "FromHost";
-            //node1.AppendChild(aa);
-
-            //aa = doc.CreateElement("Identity");
-            //aa.InnerText = "NORMAL_MSG";
-            //node1.AppendChild(aa);
-
-            //aa = doc.CreateElement("ErrorCode");
-            //aa.InnerText = "0";
-            //node1.AppendChild(aa);
-
-            //aa = doc.CreateElement("ErrorMessage");
-            //aa.InnerText = "0";
-            //node1.AppendChild(aa);
-
-            //root.AppendChild(node1);
-
-            //node1 = doc.CreateElement("Header");
-
-            //aa = doc.CreateElement("MessageName");
-            //aa.InnerText = "A";
-            //node1.AppendChild(aa);
-
-            //aa = doc.CreateElement("Stream");
-            //aa.InnerText = "B";
-            //node1.AppendChild(aa);
-
-            //aa = doc.CreateElement("Function");
-            //aa.InnerText = "C";
-            //node1.AppendChild(aa);
-
-            //aa = doc.CreateElement("Wait");
-            //aa.InnerText = "D";
-            //node1.AppendChild(aa);
-
-            //aa = doc.CreateElement("SystemBytes");
-            //aa.InnerText = "E";
-            //node1.AppendChild(aa);
-
-            //aa = doc.CreateElement("AutoReply");
-            //aa.InnerText = "F";
-            //node1.AppendChild(aa);
-
-            //aa = doc.CreateElement("NoLogging");
-            //aa.InnerText = "G";
-            //node1.AppendChild(aa);
-
-            //aa = doc.CreateElement("DeviceID");
-            //aa.InnerText = "H";
-            //node1.AppendChild(aa);
-
-            //aa = doc.CreateElement("MessageData");
-            //aa.InnerText = "I";
-            //node1.AppendChild(aa);
-
-            //root.AppendChild(node1);
-
-            //return doc;
-
             SECSManager manager = new SECSManager();
-            XmlDocument doc = manager.GetSECSXmlData();
+            //XmlDocument doc = manager.GetSECSXmlData();
         } 
 
         internal XmlDocument CreateTopNode(ref XmlElement aRootElement)
