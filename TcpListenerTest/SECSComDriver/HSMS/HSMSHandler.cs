@@ -83,14 +83,14 @@ namespace SECSControl.HSMS
 
         private void InitializeThread()
         {
-            mHSMSReceive = new HSMSReceive();
-            mHSMSReceive.Initialize(this);
+            mHSMSSend = new HSMSSend();
+            mHSMSSend.Initialize(this);
 
             mHSMSDataMessage = new HSMSDataMessage();
             mHSMSDataMessage.Initialize(this);
 
-            mHSMSSend = new HSMSSend();
-            mHSMSSend.Initialize(this);
+            mHSMSReceive = new HSMSReceive();
+            mHSMSReceive.Initialize(this);
         }
 
         private void TerminateThread()
@@ -132,7 +132,7 @@ namespace SECSControl.HSMS
             byte[] numArray = new byte[4];
 
             Array.Copy((Array)data.Header, 6, (Array)numArray, 0, 4);
-            long systemBytes = Config.Bytes2Long(numArray, true);
+            long systemBytes = Config.Bytes2Int(numArray, true);
             byte num = data.Header[5];
             if (num == (byte)0)
             {
@@ -152,6 +152,8 @@ namespace SECSControl.HSMS
                             mHSMSSend.SendControlMessage(0, 2, systemBytes);
                             SetStatus(SECS_STATUS.SELECT);
                         }
+                        if (OnSECSConnected != null)
+                            OnSECSConnected(mConfig.EquipmentID, null);
                         break;
                     case 2:
                         break;
@@ -184,6 +186,8 @@ namespace SECSControl.HSMS
                 OnSECSDisConnected(mConfig.EquipmentID, null);
             
             TerminateThread();
+
+            HSMSConnectThread();
         }
     }
 }

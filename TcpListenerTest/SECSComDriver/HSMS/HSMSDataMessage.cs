@@ -78,8 +78,8 @@ namespace SECSControl.HSMS
                 Array.Copy(headerBytes, 0, arrayDeviceID, 0, 2);
                 Array.Copy(headerBytes, 6, arraySystembytes, 0, 4);
 
-                mSECSDataItem.DeviceID = Config.Bytes2Int(arrayDeviceID);
-                mSECSDataItem.SystemBytes = Config.Bytes2Long(arraySystembytes);
+                mSECSDataItem.DeviceID = (int)Config.Bytes2Int(arrayDeviceID);
+                mSECSDataItem.SystemBytes = Config.Bytes2Int(arraySystembytes);
                 mSECSDataItem.WaitBit = (headerBytes[2] & 0x80) == 0x80 ? true : false;
                 mSECSDataItem.Stream = (int)(headerBytes[2] & 0x7F);
                 mSECSDataItem.Function = headerBytes[3];
@@ -134,25 +134,25 @@ namespace SECSControl.HSMS
                         case 0x65:
                         case 0x66:
                         case 0x67:
-                            SetInt1(type - (byte)SECSII_TYPE.I1);
+                            SetInt(type, SECSII_TYPE.I1);
                             break;
                         //  I2
                         case 0x69:
                         case 0x6A:
                         case 0x6B:
-                            SetInt2(type - (byte)SECSII_TYPE.I2);
+                            SetInt(type, SECSII_TYPE.I2);
                             break;
                         //  I4
                         case 0x71:
                         case 0x72:
                         case 0x73:
-                            SetInt4(type - (byte)SECSII_TYPE.I4);
+                            SetInt(type, SECSII_TYPE.I4);
                             break;
                         //  I8
                         case 0x61:
                         case 0x62:
                         case 0x63:
-                            SetInt8(type - (byte)SECSII_TYPE.I8);
+                            SetInt(type, SECSII_TYPE.I8);
                             break;
                         //  F4
                         case 0x91:
@@ -168,28 +168,32 @@ namespace SECSControl.HSMS
                         case 0xA5:
                         case 0xA6:
                         case 0xA7:
+                            SetUInt(type, SECSII_TYPE.U1);
                             break;
                         //  U2
                         case 0xA9:
                         case 0xAA:
                         case 0xAB:
+                            SetUInt(type, SECSII_TYPE.U2);
                             break;
                         //  U4
                         case 0xB1:
                         case 0xB2:
                         case 0xB3:
+                            SetUInt(type, SECSII_TYPE.U4);
                             break;
                         //  U8
                         case 0xA1:
                         case 0xA2:
                         case 0xA3:
+                            SetUInt(type, SECSII_TYPE.U8);
                             break;
                     }
                 }
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
-                
+
             }
         }
 
@@ -198,7 +202,7 @@ namespace SECSControl.HSMS
             byte[] lengthArray = new byte[length];
             Array.Copy(mDataBytes, mDataPos, lengthArray, 0, length);
             mDataPos += length;
-            return Config.Bytes2Int(lengthArray);
+            return (int)Config.Bytes2Int(lengthArray);
         }
 
         internal void SetList(int length)
@@ -209,53 +213,136 @@ namespace SECSControl.HSMS
         internal void SetBinary(int length)
         {
             int nDataLength = GetDataLength(length);
-            StringBuilder sbBinary = new StringBuilder();
+            if (nDataLength == 0)
+            {
+                mSECSDataItem.AddValue(SECSII_TYPE.B, nDataLength, "");
+            }
+            else
+            {
+                StringBuilder sbBinary = new StringBuilder();
 
-            for(int index = mDataPos; index < mDataPos + nDataLength; index++)
-                sbBinary.AppendFormat("{0} ", mDataBytes[index]);
+                for (int index = mDataPos; index < mDataPos + nDataLength; index++)
+                    sbBinary.AppendFormat("{0} ", mDataBytes[index]);
 
-            mDataPos += nDataLength;
+                mDataPos += nDataLength;
 
-            mSECSDataItem.AddValue(SECSII_TYPE.B, nDataLength, sbBinary.ToString());
+                mSECSDataItem.AddValue(SECSII_TYPE.B, nDataLength, sbBinary.ToString());
+            }
         }
 
         internal void SetBooean(int length)
         {
             int nDataLength = GetDataLength(length);
-            StringBuilder sbBinary = new StringBuilder();
+            if (nDataLength == 0)
+            {
+                mSECSDataItem.AddValue(SECSII_TYPE.BOOLEAN, nDataLength, "");
+            }
+            else
+            {
+                StringBuilder sbBinary = new StringBuilder();
 
-            for (int index = mDataPos; index < mDataPos + nDataLength; index++)
-                sbBinary.AppendFormat("{0} ", mDataBytes[index]);
+                for (int index = mDataPos; index < mDataPos + nDataLength; index++)
+                    sbBinary.AppendFormat("{0} ", mDataBytes[index]);
 
-            mDataPos += nDataLength;
+                mDataPos += nDataLength;
 
-            mSECSDataItem.AddValue(SECSII_TYPE.BOOLEAN, nDataLength, sbBinary.ToString());
+                mSECSDataItem.AddValue(SECSII_TYPE.BOOLEAN, nDataLength, sbBinary.ToString());
+            }
         }
 
         internal void SetASCII(int length)
         {
-            string strValue = Encoding.Default.GetString(mDataBytes, mDataPos, length);
-            mSECSDataItem.AddValue(SECSII_TYPE.A, length, strValue);
+            int nDataLength = GetDataLength(length);
+            if (nDataLength == 0)
+            {
+                mSECSDataItem.AddValue(SECSII_TYPE.A, nDataLength, "");
+            }
+            else
+            {
+                string strValue = Encoding.Default.GetString(mDataBytes, mDataPos, nDataLength);
+
+                mDataPos += nDataLength;
+
+                mSECSDataItem.AddValue(SECSII_TYPE.A, nDataLength, strValue);
+            }
         }
 
-        internal void SetInt1(int length)
+        internal void SetInt(int type, SECSII_TYPE baseType)
         {
+            int nDataLength = GetDataLength(type - (byte)baseType);
+            if (nDataLength == 0)
+            {
+                mSECSDataItem.AddValue(baseType, nDataLength, "");
+            }
+            else
+            {
+                int dataLength = 0;
+                switch(baseType)
+                {
+                    case SECSII_TYPE.I1:
+                        dataLength = 1;
+                        break;
+                    case SECSII_TYPE.I2:
+                        dataLength = 2;
+                        break;
+                    case SECSII_TYPE.I4:
+                        dataLength = 4;
+                        break;
+                    case SECSII_TYPE.I8:
+                        dataLength = 8;
+                        break;
+                }
+                byte[] dataArray = new byte[dataLength];
+                StringBuilder sbInt = new StringBuilder();
 
+                for(int i =0; i < nDataLength; i += dataLength)
+                {
+                    Array.Copy(mDataBytes, mDataPos, dataArray, 0, dataLength);
+                    sbInt.AppendFormat("{0} ", Config.Bytes2Int(dataArray));
+                    mDataPos += dataLength;
+                }
+
+                mSECSDataItem.AddValue(baseType, nDataLength / dataLength, sbInt.ToString());
+            }
         }
 
-        internal void SetInt2(int length)
+        internal void SetUInt(int type, SECSII_TYPE baseType)
         {
+            int nDataLength = GetDataLength(type - (byte)baseType);
+            if (nDataLength == 0)
+            {
+                mSECSDataItem.AddValue(baseType, nDataLength, "");
+            }
+            else
+            {
+                int dataLength = 0;
+                switch (baseType)
+                {
+                    case SECSII_TYPE.I1:
+                        dataLength = 1;
+                        break;
+                    case SECSII_TYPE.I2:
+                        dataLength = 2;
+                        break;
+                    case SECSII_TYPE.I4:
+                        dataLength = 4;
+                        break;
+                    case SECSII_TYPE.I8:
+                        dataLength = 8;
+                        break;
+                }
+                byte[] dataArray = new byte[dataLength];
+                StringBuilder sbInt = new StringBuilder();
 
-        }
+                for (int i = 0; i < nDataLength; i += dataLength)
+                {
+                    Array.Copy(mDataBytes, mDataPos, dataArray, 0, dataLength);
+                    sbInt.AppendFormat("{0} ", Config.Bytes2UInt(dataArray));
+                    mDataPos += dataLength;
+                }
 
-        internal void SetInt4(int length)
-        {
-
-        }
-
-        internal void SetInt8(int length)
-        {
-
+                mSECSDataItem.AddValue(baseType, nDataLength / dataLength, sbInt.ToString());
+            }
         }
     }
 }

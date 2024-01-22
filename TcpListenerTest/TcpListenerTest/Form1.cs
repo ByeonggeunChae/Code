@@ -27,21 +27,42 @@ namespace TcpListenerTest
         private void LinkEventSECS()
         {
             manager.OnSECSConnected += Manager_OnSECSConnected;
+            manager.OnSECSDisConnected += Manager_OnSECSDisConnected;
+        }
+
+        private void Manager_OnSECSDisConnected(string EquipmentID, XmlDocument XML)
+        {
+            this.Invoke(new Action(delegate ()
+            {
+                ListViewItem item = new ListViewItem(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
+                item.SubItems.Add($"{EquipmentID} : DisConnected");
+                listView1.Items.Add(item);
+            }));
         }
 
         private void Manager_OnSECSConnected(string EquipmentID, XmlDocument XML)
         {
-            MessageBox.Show(EquipmentID);
+            this.Invoke(new Action(delegate ()
+            {
+                ListViewItem item = new ListViewItem(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
+                item.SubItems.Add($"{EquipmentID} : Connected");
+                listView1.Items.Add(item);
+            }));
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            LinkEventSECS();
+            
             manager.Initialize("aaaa");
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            LinkEventSECS();
+
+            columnHeader2.Width = listView1.Width - 250;
+
             //XmlDocument aDispDoc = null;
             //aDispDoc = MakeBasicXml(aDispDoc);
 

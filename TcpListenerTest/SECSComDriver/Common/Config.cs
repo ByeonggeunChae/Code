@@ -106,9 +106,9 @@ namespace SECSControl.Common
             return convertBytes;
         }
 
-        internal static int Bytes2Int(byte[] value, bool reverse = false)
+        internal static long Bytes2Int(byte[] value, bool reverse = false)
         {
-            if(value.Length != 4)
+            if(value.Length < 4)
             {
                 if (reverse)
                     Array.Resize(ref value, 4);
@@ -124,42 +124,64 @@ namespace SECSControl.Common
             if ((!reverse && BitConverter.IsLittleEndian) || (reverse && !BitConverter.IsLittleEndian))
                 Array.Reverse(value);
 
-            return BitConverter.ToInt32(value, 0);
-
-
-            //int convertValue = 0;
-
-            //switch (value.Length)
-            //{
-            //    case 1:
-            //        convertValue = (int)value[0];
-            //        break;
-            //    case 2:
-            //        convertValue = BitConverter.ToInt16(value, 0);
-            //        break;
-            //    case 4:
-            //        convertValue = BitConverter.ToInt32(value, 0);
-            //        break;
-            //}
-            //return convertValue;
+            return value.Length == 8 ? BitConverter.ToInt64(value, 0) : BitConverter.ToInt32(value, 0);
         }
 
-        internal static long Bytes2Long(byte[] value, bool reverse = false)
+        internal static ulong Bytes2UInt(byte[] value, bool reverse = false)
         {
+            if (value.Length < 4)
+            {
+                if (reverse)
+                    Array.Resize(ref value, 4);
+                else
+                {
+                    byte[] tempArray = new byte[4];
+                    Array.Copy(value, 0, tempArray, 4 - value.Length, value.Length);
+                    Array.Resize(ref value, 4);
+                    Array.Copy(tempArray, value, tempArray.Length);
+                }
+            }
+
             if ((!reverse && BitConverter.IsLittleEndian) || (reverse && !BitConverter.IsLittleEndian))
                 Array.Reverse(value);
 
-            long convertValue = 0;
-            switch (value.Length)
-            {
-                case 4:
-                    convertValue = BitConverter.ToInt32(value, 0);
-                    break;
-                case 8:
-                    convertValue = BitConverter.ToInt64(value, 0);
-                    break;
-            }
-            return convertValue;
+            return value.Length == 8? BitConverter.ToUInt64(value, 0) : BitConverter.ToUInt32(value, 0);
         }
+
+        //internal static long Bytes2Long(byte[] value, bool reverse = false)
+        //{
+        //    if ((!reverse && BitConverter.IsLittleEndian) || (reverse && !BitConverter.IsLittleEndian))
+        //        Array.Reverse(value);
+
+        //    long convertValue = 0;
+        //    switch (value.Length)
+        //    {
+        //        case 4:
+        //            convertValue = BitConverter.ToInt32(value, 0);
+        //            break;
+        //        case 8:
+        //            convertValue = BitConverter.ToInt64(value, 0);
+        //            break;
+        //    }
+        //    return convertValue;
+        //}
+
+        //internal static ulong Bytes2Long(byte[] value, bool reverse = false)
+        //{
+        //    if ((!reverse && BitConverter.IsLittleEndian) || (reverse && !BitConverter.IsLittleEndian))
+        //        Array.Reverse(value);
+
+        //    ulong convertValue = 0;
+        //    switch (value.Length)
+        //    {
+        //        case 4:
+        //            convertValue = BitConverter.ToInt32(value, 0);
+        //            break;
+        //        case 8:
+        //            convertValue = BitConverter.ToUInt64(value, 0);
+        //            break;
+        //    }
+        //    return convertValue;
+        //}
     }
 }
